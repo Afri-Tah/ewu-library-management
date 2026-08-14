@@ -1,0 +1,14 @@
+# Don't let the web server list folder contents.
+Options -Indexes
+
+# Block direct download of anything that isn't meant to be served —
+# the SQL dump (schema + password hashes), docs, git/config files, etc.
+# PHP files are untouched; auth checks inside them still apply.
+<FilesMatch "\.(sql|md|sqlite|db|log|ini|env|bak|gitignore|htpasswd)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Deny from all
+    </IfModule>
+</FilesMatch>
