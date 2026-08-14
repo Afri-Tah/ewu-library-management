@@ -1,4 +1,4 @@
-# 📚 EWU Library Management System
+#  EWU Library Management System
 
 A full-stack, database-backed Library Management System built for **CSE302 — Database Systems** at **East West University**. It manages the complete lifecycle of a university library: book catalog, member registration, borrowing/returning, and fine collection — with distinct **Admin** and **Member** roles.
 
