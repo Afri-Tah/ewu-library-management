@@ -176,7 +176,7 @@ Full details in [`SECURITY.md`](./SECURITY.md).
 
 | Name | Student ID | Contribution % |
 |---|---|---|
-| _Afrida Tahsin _ | _2024-3-60-114_ | _40%_ |
+| _Afrida Tahsin_ | _2024-3-60-114_ | _40%_ |
 | _Nusrat Islam Tasmim_ | _2024-3-60-042_ | _30%_ |
 | _Zannatul Hasan Roza_ | _2024-3-60-246_ | _30%_ |
 
