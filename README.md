@@ -180,7 +180,7 @@ Full details in [`SECURITY.md`](./SECURITY.md).
 | _Nusrat Islam Tasmim_ | _2024-3-60-042_ | _30%_ |
 | _Zannatul Hasan Roza_ | _2024-3-60-246_ | _30%_ |
 
-*(Per course guidelines, the gap between the highest and lowest contributor must be at least 10%.)*
+
 
 ---
 
