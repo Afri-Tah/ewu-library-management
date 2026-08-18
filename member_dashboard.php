@@ -47,16 +47,18 @@ if ($member) {
 <div class="card">
   <div class="table-wrap">
     <table>
-      <tr><th>Book</th><th>Borrow Date</th><th>Due Date</th><th>Status</th></tr>
+      <tr><th>Book</th><th>Borrow Date</th><th>Due Date</th><th>Status</th><th>Fine Due</th></tr>
       <?php while ($row = $rows->fetch_assoc()):
-          $status = $row['status'];
-          $badge_class = $status === 'Returned' ? 'badge-ok' : ($status === 'Borrowed' ? 'badge-warn' : 'badge-bad');
+          $status = effective_borrow_status($row['status'], $row['due_date']);
+          $badge_class = $status === 'Returned' ? 'badge-ok' : ($status === 'Overdue' ? 'badge-bad' : 'badge-warn');
+          $late = $status === 'Overdue' ? days_late($row['due_date']) : 0;
       ?>
       <tr>
         <td><?php echo h($row['title']); ?></td>
         <td><?php echo h($row['borrow_date']); ?></td>
         <td><?php echo h($row['due_date']); ?></td>
         <td><span class="badge <?php echo $badge_class; ?>"><?php echo h($status); ?></span></td>
+        <td><?php echo $late > 0 ? h(number_format($late * FINE_PER_DAY, 2)) . ' (accruing)' : '—'; ?></td>
       </tr>
       <?php endwhile; ?>
     </table>

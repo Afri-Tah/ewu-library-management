@@ -11,6 +11,10 @@ $books   = $conn->query("SELECT COUNT(*) AS total FROM books")->fetch_assoc();
 $members = $conn->query("SELECT COUNT(*) AS total FROM members")->fetch_assoc();
 $borrow  = $conn->query("SELECT COUNT(*) AS total FROM borrows WHERE status='Borrowed'")->fetch_assoc();
 $fines   = $conn->query("SELECT COUNT(*) AS total FROM fines WHERE status='Unpaid'")->fetch_assoc();
+// Overdue-but-still-checked-out books also carry a fine — it just isn't
+// finalized in the `fines` table until the book is returned (see return_book.php).
+// Counting them here too so the dashboard doesn't understate what's owed.
+$accruing = $conn->query("SELECT COUNT(*) AS total FROM borrows WHERE status='Borrowed' AND due_date < CURDATE()")->fetch_assoc();
 ?>
 
 <div class="page-title-row">
@@ -47,6 +51,14 @@ $fines   = $conn->query("SELECT COUNT(*) AS total FROM fines WHERE status='Unpai
     <div>
       <div class="num"><?php echo (int)$fines['total']; ?></div>
       <div class="label">Unpaid Fines</div>
+    </div>
+  </div>
+
+  <div class="stat-card fines">
+    <div class="icon">&#9200;</div>
+    <div>
+      <div class="num"><?php echo (int)$accruing['total']; ?></div>
+      <div class="label">Overdue (fine accruing)</div>
     </div>
   </div>
 </div>

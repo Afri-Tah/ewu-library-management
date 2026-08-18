@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
 require_admin();
+require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['id'])) {
@@ -38,9 +39,9 @@ try {
     $stmt->execute();
     $stmt->close();
 
-    if (strtotime($return_date) > strtotime($due_date)) {
-        $days_late = (int) floor((strtotime($return_date) - strtotime($due_date)) / 86400);
-        $amount = $days_late * 20;
+    $late_days = days_late($due_date, $return_date);
+    if ($late_days > 0) {
+        $amount = $late_days * FINE_PER_DAY;
 
         $stmt = $conn->prepare("INSERT INTO fines (borrow_id, amount, status) VALUES (?, ?, 'Unpaid')");
         $stmt->bind_param("id", $borrow_id, $amount);

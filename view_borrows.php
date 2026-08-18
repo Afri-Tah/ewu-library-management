@@ -42,7 +42,10 @@ include 'header.php';
 <?php if (is_admin()): ?><th>Return</th><?php endif; ?>
 </tr>
 
-<?php while ($row = $result->fetch_assoc()): ?>
+<?php while ($row = $result->fetch_assoc()):
+    $status = effective_borrow_status($row['status'], $row['due_date']);
+    $badge_class = $status === 'Returned' ? 'badge-ok' : ($status === 'Overdue' ? 'badge-bad' : 'badge-warn');
+?>
 <tr>
 <td><?php echo (int)$row['borrow_id']; ?></td>
 <td><?php echo h($row['full_name']); ?></td>
@@ -50,7 +53,7 @@ include 'header.php';
 <td><?php echo h($row['borrow_date']); ?></td>
 <td><?php echo h($row['due_date']); ?></td>
 <td><?php echo h($row['return_date']); ?></td>
-<td><span class="badge <?php echo $row['status'] === 'Returned' ? 'badge-ok' : 'badge-warn'; ?>"><?php echo h($row['status']); ?></span></td>
+<td><span class="badge <?php echo $badge_class; ?>"><?php echo h($status); ?></span></td>
 <?php if (is_admin()): ?>
 <td>
 <?php if ($row['status'] === 'Borrowed'): ?>
