@@ -184,4 +184,4 @@ Full details in [`SECURITY.md`](./SECURITY.md).
 
 ---
 
-Developed for **CSE302 — Database System**, East West University.
+Developed for **CSE302 — Database Systems**, East West University.
