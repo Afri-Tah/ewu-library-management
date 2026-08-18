@@ -43,7 +43,16 @@ try {
     if ($late_days > 0) {
         $amount = $late_days * FINE_PER_DAY;
 
-        $stmt = $conn->prepare("INSERT INTO fines (borrow_id, amount, status) VALUES (?, ?, 'Unpaid')");
+        // Use INSERT ... ON DUPLICATE KEY UPDATE instead of a plain INSERT.
+        // `fines.borrow_id` is UNIQUE, so if a fine row for this borrow
+        // already exists (e.g. left over from an earlier admin edit or a
+        // retried return), a plain INSERT throws a duplicate-key exception
+        // and the whole return silently fails with a generic error. This
+        // recalculates the amount and keeps going instead of crashing.
+        $stmt = $conn->prepare(
+            "INSERT INTO fines (borrow_id, amount, status) VALUES (?, ?, 'Unpaid')
+             ON DUPLICATE KEY UPDATE amount = VALUES(amount)"
+        );
         $stmt->bind_param("id", $borrow_id, $amount);
         $stmt->execute();
         $stmt->close();
