@@ -56,7 +56,7 @@ include 'header.php';
 <td><span class="badge <?php echo $badge_class; ?>"><?php echo h($status); ?></span></td>
 <?php if (is_admin()): ?>
 <td>
-<?php if ($row['status'] === 'Borrowed'): ?>
+<?php if ($row['status'] !== 'Returned'): ?>
   <form method="POST" action="return_book.php" onsubmit="return confirm('Mark this book as returned?');" style="display:inline;">
     <?php echo csrf_field(); ?>
     <input type="hidden" name="id" value="<?php echo (int)$row['borrow_id']; ?>">
